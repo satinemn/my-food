@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+ <title>hashvich</title>
+    <style>  
+    #calculator {
+        width: 260px;
+        padding: 10px;
+        background-color: #9EE234;
+        border-radius: 10px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin: 20px auto;
+        font-family: Arial, sans-serif;
+}
+
+    .display {
+        grid-column: span 4;
+        height: 60px;
+        background-color: white;
+        text-align: right;
+        padding: 10px;
+        font-size: 2em;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    button {
+        height: 50px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+
+
+button:nth-child(2) { 
+    background-color: #437f37;
+ } 
+button:nth-child(4), button:nth-child(5), button:nth-child(9), button:nth-child(13), button:nth-child(17) {
+     background-color: #B0B0B0; 
+    }
+
+    </style>
+</head>
+    <div id="calculator">
+    <div class="display" id="display">0</div>
+  
+  <button onclick="clearDisplay()">AC</button>
+  <button onclick="toggleSign()">±</button>
+  <button onclick="percent()">%</button>
+  <button onclick="divide()">÷</button>
+
+  <button onclick="appendNumber(7)">7</button>
+  <button onclick="appendNumber(8)">8</button>
+  <button onclick="appendNumber(9)">9</button>
+  <button onclick="multiply()">×</button>
+
+  <button onclick="appendNumber(4)">4</button>
+  <button onclick="appendNumber(5)">5</button>
+  <button onclick="appendNumber(6)">6</button>
+  <button onclick="subtract()">-</button>
+
+  <button onclick="appendNumber(1)">1</button>
+  <button onclick="appendNumber(2)">2</button>
+  <button onclick="appendNumber(3)">3</button>
+  <button onclick="add()">+</button>
+
+  <button onclick="appendNumber(0)">0</button>
+  <button onclick="appendDot()">.</button>
+  <button onclick="calculate()">=</button>
+</div>
+  <script>
+    let display = document.getElementById("display");
+    let currentValue = "";
+    let previousValue = "";
+    let operator = null;
+
+function appendNumber(num) {
+    currentValue += num;
+    display.textContent = currentValue;
+}
+
+function appendDot() {
+    if (!currentValue.includes(".")) {
+        currentValue += ".";
+        display.textContent = currentValue;
+    }
+}
+
+function clearDisplay() {
+    currentValue = "";
+    previousValue = "";
+    operator = null;
+    display.textContent = "0";
+}
+
+function toggleSign() {
+    currentValue = (parseFloat(currentValue) * -1).toString();
+    display.textContent = currentValue;
+}
+
+function percent() {
+    currentValue = (parseFloat(currentValue) / 100).toString();
+    display.textContent = currentValue;
+}
+
+function add() {
+    setOperator("+");
+}
+
+function subtract() {
+    setOperator("-");
+}
+
+function multiply() {
+    setOperator("*");
+}
+
+function divide() {
+    setOperator("/");
+}
+
+function setOperator(op) {
+    if (currentValue === "") return;
+    if (previousValue !== "") calculate();
+    operator = op;
+    previousValue = currentValue;
+    currentValue = "";
+}
+
+function calculate() {
+    if (!operator || currentValue === "" || previousValue === "") return;
+    let result;
+    const prev = parseFloat(previousValue);
+    const curr = parseFloat(currentValue);
+    switch(operator) {
+        case "+": result = prev + curr; break;
+        case "-": result = prev - curr; break;
+        case "*": result = prev * curr; break;
+        case "/": result = prev / curr; break;
+    }
+    display.textContent = result;
+    currentValue = result.toString();
+    previousValue = "";
+    operator = null;
+}
+  </script>
+</body>
+</html>
